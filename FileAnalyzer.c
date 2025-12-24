@@ -134,6 +134,23 @@ void printResultsToFile(char *exportFilename)
     fclose(efp); // Close file
 }
 
+void bubbleSort()
+{
+    WORD temp;
+    for (int i = 0; i < wordCount - 1; i++) // Outer loop
+        {
+        for (int k = 0; k < wordCount - i - 1; k++) // Inner loop
+            {
+            if (storage[k].count < storage[k + 1].count) // Compares if the count of one is higher
+                {
+                temp = storage[k];              // Store
+                storage[k] = storage[k + 1];    // Swap
+                storage[k + 1] = temp;          // Restore
+            }
+        }
+    }
+}
+
 int main()
 {
     char filename[256]; // String initialization
@@ -150,6 +167,7 @@ int main()
     }
     processFile(fp); // Pass to functions
     fclose(fp); // Close file
+    bubbleSort(); // Sort in descending order
 
     printf("Please select mode from following\n(1) Display in Terminal\n(2) Export File\nChoice: ");
     scanf("%d", &mode);
@@ -172,3 +190,4 @@ int main()
     }
     return 0;
 }
+
