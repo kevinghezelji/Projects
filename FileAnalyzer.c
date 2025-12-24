@@ -118,23 +118,57 @@ void printResults() // Function to display results
     }
 }
 
+void printResultsToFile(char *exportFilename)
+{
+    FILE *efp = fopen(exportFilename, "w"); // Open export file
+    if (efp == NULL) // Check to make sure file opens
+        {
+        printf("Error, File could not be opened\n"); // Error message and return if it doesn't
+        return;
+    }
+    fprintf(efp, "WORD\tCOUNT\n"); // Header
+    for (int i = 0; i < wordCount; i++) // Passover loop to print Array
+        {
+        fprintf(efp, "%s\t%d\n", storage[i].text, storage[i].count); // Prints each word and how many times it appears
+    }
+    fclose(efp); // Close file
+}
+
 int main()
 {
     char filename[256]; // String initialization
+    int mode;
 
     printf("File Analyzer\nPlease enter filename: "); // Print and Scan functions for filename
     scanf("%s", filename);
 
     FILE *fp = fopen(filename, "r"); // Open file and set to read
     if (fp == NULL) // Make sure file opens
-        {
+    {
         printf("Error, File could not be opened\n"); // Error statement
         return 1; // Program failed
     }
-
     processFile(fp); // Pass to functions
     fclose(fp); // Close file
-    printResults(); // Print
 
+    printf("Please select mode from following\n(1) Display in Terminal\n(2) Export File\nChoice: ");
+    scanf("%d", &mode);
+
+    if (mode == 1) // Mode selected for Terminal Print
+        {
+        printResults(); // Print
+    }
+    else if (mode == 2) // Mode selected for Export file print
+        {
+        char exportFilename[256]; // String Initialization
+        printf("Please enter export filename: "); // Print and Scan functions for filename
+        scanf("%s", exportFilename);
+        printResultsToFile(exportFilename); // Print to File
+    }
+    else // Option chosen does not exist
+        {
+        printf("Error, Option selected is not on the menu"); // Error statement
+        return 1; // Program Failed
+    }
     return 0;
 }
